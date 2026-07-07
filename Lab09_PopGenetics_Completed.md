@@ -4,7 +4,7 @@ Name: ________________________   Date: ________________________
 
 Simulator: Wright-Fisher model (evobiR wf_model), https://evobir.shinyapps.io/wf_model/
 
-Each "Run" is one execution of the simulation, which is 10 replicate populations run for 100 generations. For each run I recorded how many of the 10 replicates ended with allele A fixed (f(A) = 1) or lost (f(A) = 0) at Generation 100. Replicates that were neither fixed nor lost still had both alleles present.
+Each "Run" is one execution of the simulation, which is 10 replicate populations carried for 100 generations. For each run I counted how many of the 10 lines ended at Generation 100 with allele A fixed (f(A) = 1) or lost (f(A) = 0). Lines that were neither fixed nor lost still had both alleles.
 
 ## Simulation 1: n = 100, f(A) = 0.5, no selection (all fitness = 1.0)
 
@@ -18,11 +18,11 @@ Each "Run" is one execution of the simulation, which is 10 replicate populations
 
 Do you always obtain the same result? Why?
 
-No, the number that fix or are lost changes every run. Genetic drift is a random process. Each generation the alleles passed on are a chance sample of the previous generation, so each of the 10 replicate populations follows its own random path, and each run of 10 replicates is an independent random draw. Because A starts at 0.5 with no selection, fixation and loss are equally likely, so across many replicates about as many fix as are lost. Most replicates are still segregating after only 100 generations because n = 100 is large enough that drift moves slowly.
+No. The counts change from run to run. Drift works by random sampling: each generation, the alleles that get passed to the next one are a chance sample of the parents, so every line wanders on its own and each run of 10 lines is a fresh draw. A starts at 0.5 and no genotype has an edge, so it is as likely to drift up to fixation as down to loss. At n = 100 the sampling error is small enough that after 100 generations most lines are still in the middle with both alleles present.
 
 ## Simulation 2: n = 1000, f(A) = 0.5, no selection
 
-Prediction: With a much larger population, drift should be weaker, so allele frequencies will change more slowly and very few or no replicates should fix or be lost within 100 generations. Most should stay near 0.5.
+Prediction: A bigger population has less sampling error, so the frequencies should barely move. I expect few or no lines to reach 0 or 1 in 100 generations, with most sitting close to 0.5.
 
 | Run | # replicates final f(A) = 1 (fixed) | # replicates final f(A) = 0 (lost) |
 |-----|:---:|:---:|
@@ -34,11 +34,11 @@ Prediction: With a much larger population, drift should be weaker, so allele fre
 
 What happened? Compare with Simulation 1.
 
-No replicate fixed or was lost in any run. All 50 replicates stayed near f(A) = 0.5, and the lines stayed close together instead of spreading out to 0 and 1. Compared with Simulation 1 (n = 100), increasing n to 1000 greatly reduced the effect of drift. This shows that genetic drift is stronger in small populations and weaker in large ones.
+Nothing fixed and nothing was lost. All 50 lines stayed bunched around 0.5 instead of fanning out to the edges the way they did at n = 100. Going from n = 100 to n = 1000 cut the drift down to almost nothing. Drift has a bigger effect in small populations than in large ones.
 
 ## Simulation 3: n = 100, f(A) = 0.1, no selection
 
-Prediction: The allele starts rare (0.1). The probability that an allele eventually fixes equals its frequency, so about 10% of replicates should fix A and about 90% should lose it. Loss should dominate.
+Prediction: A starts rare at 0.1. An allele's chance of fixing equals its current frequency, so I expect about 1 line in 10 to fix A and the other 9 to lose it. Loss should win out.
 
 | Run | # replicates final f(A) = 1 (fixed) | # replicates final f(A) = 0 (lost) |
 |-----|:---:|:---:|
@@ -50,11 +50,11 @@ Prediction: The allele starts rare (0.1). The probability that an allele eventua
 
 What happened? Compare with Simulation 1.
 
-Most replicates lost allele A (37 of 50 lost, 13 still segregating, 0 fixed within 100 generations). Compared with Simulation 1, which started at 0.5 and gave a roughly balanced mix, starting rare made loss far more likely. This matches the idea that fixation probability equals starting frequency (0.1 here). The roughly 10% of replicates expected to eventually fix mostly have not climbed all the way from 0.1 to 1.0 in only 100 generations; they are among the still-segregating replicates. This is why rare alleles are easily lost in small populations, which is an important issue in conservation.
+Loss dominated: 37 of the 50 lines lost A, 13 still carried both alleles, and none fixed within 100 generations. Starting at 0.1 instead of 0.5 (Simulation 1) made loss far more common, which fits the rule that an allele's fixation chance equals its starting frequency. The 10% or so that would fix given enough time mostly could not climb from 0.1 all the way to 1.0 in only 100 generations, so they show up as lines that are still segregating. A rare allele in a small population is an easy thing to lose.
 
 ## Simulation 4: n = 1000, f(A) = 0.1, no selection
 
-Prediction: Same low starting frequency, but the large population makes drift weak, so the allele should neither fix nor be lost quickly. Most replicates should stay near 0.1.
+Prediction: Same rare start at 0.1, but n = 1000 makes drift weak. The allele should mostly sit near 0.1 without fixing or being lost.
 
 | Run | # replicates final f(A) = 1 (fixed) | # replicates final f(A) = 0 (lost) |
 |-----|:---:|:---:|
@@ -66,13 +66,13 @@ Prediction: Same low starting frequency, but the large population makes drift we
 
 What happened? Compare with Simulation 3.
 
-Almost nothing resolved. Only 1 replicate of 50 was lost, none fixed, and the allele stayed near 0.1 in almost every replicate. Compared with Simulation 3 (n = 100, where 37 of 50 were lost), the larger population protected the rare allele from being lost. In a small population a rare allele is quickly lost by chance; in a large population the same allele lasts much longer. This is why large populations keep genetic variation and small populations lose it.
+Barely anything changed. One line out of 50 lost A, none fixed, and the rest held near 0.1. Simulation 3 lost the same rare allele in 37 of 50 lines at n = 100, so the bigger population kept it around much longer. Large populations hold onto their variation, while small ones bleed it off by chance.
 
 ## Simulation 5: n = 100, f(A) = 0.5, fitness AA = 1.0, Aa = 0.9, aa = 0.9
 
 Is this selection for or against allele A? What do you predict? Why?
 
-This is selection for allele A (and against a). Genotype AA has the highest fitness (1.0), while Aa and aa are lower (0.9), so carrying two A alleles gives the best survival and reproduction. A is favored. (A acts as a recessive beneficial allele here, since only AA gets the advantage.) Prediction: A should increase and fix in most or all replicates, more reliably than under drift alone.
+Selection favors A. AA has the top fitness at 1.0 while Aa and aa both sit at 0.9, so an individual needs two copies of A to get the benefit. That makes A a recessive advantageous allele and puts a against it. I expect A to climb and fix in most or all lines, and to do it more consistently than drift alone would.
 
 | Run | # replicates final f(A) = 1 (fixed) | # replicates final f(A) = 0 (lost) |
 |-----|:---:|:---:|
@@ -84,11 +84,11 @@ This is selection for allele A (and against a). Genotype AA has the highest fitn
 
 What happened? Compare with Simulation 1 (equal selection coefficients).
 
-Allele A fixed in almost every replicate (48 of 50 fixed, 0 lost, 2 still segregating). Compared with Simulation 1, which had the same n and the same starting frequency but no selection and gave a random, roughly balanced result, adding even a small fitness advantage (a difference of 0.1) drove A to fixation. Selection overpowered drift and pushed A up in a predictable direction, while under drift alone the direction was random.
+A fixed in nearly every line: 48 of 50 fixed, none lost, 2 still segregating. Simulation 1 used the same n and the same 0.5 start with no selection and gave a random, near-even split. A fitness gap of only 0.1 was enough to send A to fixation almost every time. With selection the outcome had a clear direction; with drift alone it was a coin flip.
 
 ## Simulation 6: n = 100, f(A) = 0.5, fitness AA = 1.0, Aa = 0.8, aa = 0.8
 
-Prediction: The fitness gap is now larger (0.2 instead of 0.1), so selection is even stronger. A should fix even faster and in all replicates.
+Prediction: The fitness gap doubles to 0.2, so selection pushes harder. A should fix in every line and get there sooner.
 
 | Run | # replicates final f(A) = 1 (fixed) | # replicates final f(A) = 0 (lost) |
 |-----|:---:|:---:|
@@ -100,18 +100,18 @@ Prediction: The fitness gap is now larger (0.2 instead of 0.1), so selection is 
 
 What happened? Compare with Simulation 5.
 
-Allele A fixed in all 50 replicates, none lost and none left segregating. Compared with Simulation 5 (a fitness difference of 0.1), the larger fitness difference (0.2) drove A to fixation even faster and more completely. The larger the fitness difference, the stronger selection is relative to drift, and the faster and more certain fixation of the favored allele becomes.
+A fixed in all 50 lines, with none lost and none left segregating. The 0.2 gap did the job faster and more cleanly than the 0.1 gap in Simulation 5. A wider fitness gap gives selection the upper hand over drift, so the favored allele fixes sooner and more surely.
 
 ## Concluding Questions
 
 After completing this lab, how do you think population size affects genetic drift?
 
-Genetic drift is stronger in small populations and weaker in large populations. In a small population (n = 100, Simulations 1 and 3), the chance sampling of which individuals survive and reproduce causes large, fast, random swings in allele frequency, so alleles fix or are lost quickly. In a large population (n = 1000, Simulations 2 and 4), these random changes average out, frequencies change slowly, and over the same 100 generations almost nothing fixed or was lost. For conservation, this means small or shrinking populations lose genetic variation quickly and can lose helpful alleles by chance.
+Population size sets how strong drift is. In the small populations (n = 100, Simulations 1 and 3), the luck of which individuals happened to breed threw the frequencies around, and lines fixed or lost A within 100 generations. In the large populations (n = 1000, Simulations 2 and 4) that luck averaged out, the frequencies held steady, and almost nothing fixed or was lost in the same span. Smaller populations drift faster, which is why a shrinking or isolated population can lose useful alleles by chance alone.
 
 What is the fixation probability of an allele?
 
-With no selection, the probability that an allele eventually fixes equals its current frequency. An allele at 0.5 has about a 50% chance of fixing (Simulation 1); an allele at 0.1 has about a 10% chance of fixing and a 90% chance of being lost (Simulation 3). Fixation and loss are two sides of the same coin: probability of loss = 1 minus frequency. Fixation can take many generations, so in a short 100-generation window most low-frequency alleles are simply lost.
+Without selection, an allele's chance of eventually fixing equals its current frequency. At 0.5 that is a 50% chance (Simulation 1); at 0.1 it is a 10% chance of fixing and 90% of being lost (Simulation 3). Loss is the flip side, with a probability of 1 minus the frequency. Fixation can take a long time, so inside a 100-generation window most rare alleles disappear before they ever reach it.
 
 How does fitness affect the fixation probability of an allele?
 
-Fitness (natural selection) shifts fixation probability away from the neutral expectation of equaling the allele's frequency. A beneficial allele has a fixation probability greater than its starting frequency; in Simulations 5 and 6, allele A started at only 0.5 but fixed in nearly all replicates because it was favored. A harmful allele has a fixation probability lower than its frequency and is likely to be lost. The larger the fitness difference, the more selection dominates over drift and the more predictable the outcome. Selection and drift act together, and in very small populations drift can overpower weak selection and occasionally fix a harmful allele or lose a beneficial one. This matters for conservation, because small or endangered populations can lose helpful genetic variation and build up harmful alleles, making it harder for them to adapt to environmental change.
+Fitness pulls that probability away from the neutral value. A beneficial allele fixes more often than its starting frequency alone would predict. In Simulations 5 and 6, A began at 0.5 but fixed in nearly every line because it carried an advantage. A harmful allele does the reverse and usually gets weeded out. Widen the fitness gap and selection takes over from drift, which makes the result easier to predict. The two forces still act at once, though, and in a very small population drift can beat weak selection and fix a harmful allele or wipe out a good one. That is the conservation worry: small, isolated populations can lose the variation they would need to adapt as their environment changes.
